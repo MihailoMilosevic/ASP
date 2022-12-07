@@ -10,7 +10,7 @@ int main() {
 	Graf g;
 	dat >> g;
 	g.dodajCvor("Mihailo");
-	g.dodajCvor("Aleksandar");
+	g.dodajGranu("student", "Mihailo", 0.98);
 	cout << g;
 	dat.close();
 
