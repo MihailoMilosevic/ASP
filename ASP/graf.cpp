@@ -170,10 +170,17 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 			if ((tmp2->sused[0] >= 'a' && s2[0] >= 'a') || (tmp2->sused[0] <= 'Z' && s2[0] <= 'Z')) {
 				if (tmp2->sused[0] < s2[0]) {
 					if (tmp2 == tmp1->prviSused) { tmp1->prviSused = tmp3; }
-					tmp3->sused = tmp2->sused;
-					tmp3->tezina = tmp2->tezina;
-					++tmp2;
-					++tmp3;
+					if (tmp2 != sled->prviSused) {
+						tmp3->sused = tmp2->sused;
+						tmp3->tezina = tmp2->tezina;
+						++tmp2;
+						++tmp3;
+					}
+					else {
+						tmp3->sused = s2;
+						tmp3->tezina = t;
+						break;
+					}
 				}
 				else {
 					tmp3->sused = s2;
@@ -184,10 +191,17 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 			else if (tmp2->sused[0] > 'a') {
 				if (tmp2->sused[0] - 'a' + 'A' < s2[0]) {
 					if (tmp2 == tmp1->prviSused) { tmp1->prviSused = tmp3; }
-					tmp3->sused = tmp2->sused;
-					tmp3->tezina = tmp2->tezina;
-					++tmp2;
-					++tmp3;
+					if (tmp2 != sled->prviSused) {
+						tmp3->sused = tmp2->sused;
+						tmp3->tezina = tmp2->tezina;
+						++tmp2;
+						++tmp3;
+					}
+					else {
+						tmp3->sused = s2;
+						tmp3->tezina = t;
+						break;
+					}
 				}
 				else {
 					tmp3->sused = s2;
@@ -198,10 +212,17 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 			else {
 				if (tmp2->sused[0] + 'a' - 'A' < s2[0]) {
 					if (tmp2 == tmp1->prviSused) { tmp1->prviSused = tmp3; }
-					tmp3->sused = tmp2->sused;
-					tmp3->tezina = tmp2->tezina;
-					++tmp2;
-					++tmp3;
+					if (tmp2 != sled->prviSused) {
+						tmp3->sused = tmp2->sused;
+						tmp3->tezina = tmp2->tezina;
+						++tmp2;
+						++tmp3;
+					}
+					else{
+						tmp3->sused = s2;
+						tmp3->tezina = t;
+						break;
+					}
 				}
 				else {
 					tmp3->sused = s2;

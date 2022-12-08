@@ -23,6 +23,7 @@ int main() {
 	g.dodajGranu("zadatak", "ocena", 0.8);
 	g.dodajGranu("zadatak", "ETF", 0.63);
 	g.dodajGranu("zvezda", "ETF", 0.13);
+	g.dodajGranu("zvezda", "ocena", 0); //ovde nece, valjda kad predposlenji ima bar 2 grane mozda 
 	cout << g;
 	dat.close();
 
