@@ -36,8 +36,8 @@ private:
 	};
 
 	Pokazivac* listaPokazivaca = nullptr;
-	Pokazivac* tekP = nullptr;
 	Grana* listaSuseda = nullptr;
+	Pokazivac* tekP = nullptr;
 	Grana* tekS = nullptr;
 	void procitaj(istream& ut);
 	void procitajGranu(istream& ut);

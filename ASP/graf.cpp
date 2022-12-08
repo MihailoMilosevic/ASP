@@ -9,7 +9,7 @@ void Graf::procitaj(istream& ut){
 	tekS = listaSuseda;
 	for (int i = 0; i < brCvorova; i++) {
 		ut >> tekP->naziv;
-		if (i != brCvorova - 1) { ++tekP; }
+		++tekP;
 	}
 	tekP->naziv = "";
 	tekP = listaPokazivaca;
@@ -19,20 +19,16 @@ void Graf::procitaj(istream& ut){
 void Graf::procitajGranu(istream& ut){
 	string s1, s2;
 	double t;
+	Pokazivac* sled = tekP;
+	++sled;
 	ut >> s1 >> s2 >> t;
-	if (tekP->naziv == s1) {
-		if (tekP != listaPokazivaca) { ++tekS; }
-		tekS->sused = s2;
-		tekS->tezina = t;
-		if (!tekP->prviSused) { tekP->prviSused = tekS; }
-	}
-	else {
-		++tekP;
-		++tekS;
-		tekS->sused = s2;
-		tekS->tezina = t;
+	while (tekP->naziv != s1) { ++tekP; ++sled; }
+	if (!tekP->prviSused) { 
 		tekP->prviSused = tekS;
 	}
+	tekS->sused = s2;
+	tekS->tezina = t;
+	++tekS;
 }
 
 void Graf::ispisi(ostream& it) const{
