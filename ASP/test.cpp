@@ -9,12 +9,20 @@ int main() {
 	dat.open("graf1.txt", ios::in);
 	Graf g;
 	dat >> g;
-	g.dodajCvor("Mihailo");
-	g.dodajCvor("Aleksandar");
-	g.dodajGranu("student", "Mihailo", 0.91);
-	g.dodajGranu("Aleksandar", "Mihailo", 1);
-	g.dodajGranu("Mihailo", "ETF", 0.98);
-	g.dodajGranu("Mihailo", "Aleksandar", 1);
+	g.dodajCvor("Bul");
+	g.dodajCvor("Branko");
+	g.dodajCvor("zadatak");
+	g.dodajCvor("zvezda");
+	g.dodajCvor("racun");
+	g.dodajCvor("ocena");
+	g.dodajGranu("Bul", "ocena", 0.11);
+	g.dodajGranu("Bul", "ETF", 0.2);
+	g.dodajGranu("racun", "ETF", 0.56);
+	g.dodajGranu("ocena", "racun", 0.4);
+	g.dodajGranu("ocena", "ETF", 0.83);
+	g.dodajGranu("zadatak", "ocena", 0.8);
+	g.dodajGranu("zadatak", "ETF", 0.63);
+	g.dodajGranu("zvezda", "ETF", 0.13);
 	cout << g;
 	dat.close();
 

@@ -41,22 +41,25 @@ void Graf::ispisi(ostream& it) const{
 	Pokazivac* sled = tmp1;
 	++sled;
 	while (1) {
-		if (!sled->prviSused) { ++sled; }
-		if (!tmp1->prviSused) { 
-			++tmp1;
-			++sled;
+		while ((tmp1->prviSused == 0 && tmp1->naziv != "") || (sled->prviSused == 0 && sled->naziv != "")) {
+			if (tmp1->naziv == "") { break; }
+			if (!tmp1->prviSused) {
+				++tmp1;
+				if (tmp1 == sled) { ++sled; }
+			}
+			else { 
+				if (sled->naziv != "") { ++sled; }
+			}
+		}
+		if (tmp1->naziv == "") { break; }
+		while (sled->prviSused != tmp2) { 
 			it << tmp1->naziv << ' ' << tmp2->sused << ' ' << tmp2->tezina << endl;
+			++tmp2;
+			if (tmp2 == &listaSuseda[brGrana]) { break; }
 		}
-		else{
-			it << tmp1->naziv << ' ' << tmp2->sused << ' ' << tmp2->tezina << endl;
-		}
-		if (tmp2 == &listaSuseda[brGrana - 1]) { break; }
-		++tmp2;
-		if (tmp2 == sled->prviSused) { 
-			++tmp1;
-			if (!tmp1->prviSused) { ++tmp1; }
-			++sled;
-		}
+		++tmp1;
+		if (tmp1->naziv == "") { break; }
+		if (tmp1 == sled) { ++sled; }
 		
 	}
 }
@@ -67,7 +70,8 @@ void Graf::dodajCvor(string s){
 	Pokazivac* tmpStari = listaPokazivaca;
 	Pokazivac* tmpNovi = listaPokazivaca1;
 	while (1) {
-		if ((tmpStari->naziv[0] >= 'a' && s[0] >= 'a') || (tmpStari->naziv[0] <= 'Z' && s[0] <= 'Z')) {
+		if (tmpStari->naziv == "") { tmpNovi->naziv = s; break; }
+		else if ((tmpStari->naziv[0] >= 'a' && s[0] >= 'a') || (tmpStari->naziv[0] <= 'Z' && s[0] <= 'Z')) {
 			if (tmpStari->naziv[0] < s[0]) {
 				tmpNovi->naziv = tmpStari->naziv;
 				tmpNovi->prviSused = tmpStari->prviSused;
@@ -107,12 +111,14 @@ void Graf::dodajCvor(string s){
 			}
 		}
 	}
-	while (1) {
-		tmpNovi->naziv = tmpStari->naziv;
-		tmpNovi->prviSused = tmpStari->prviSused;
-		++tmpNovi;
-		++tmpStari;
-		if (tmpStari->naziv == "") { break; }
+	if (tmpStari->naziv != "") {
+		while (1) {
+			tmpNovi->naziv = tmpStari->naziv;
+			tmpNovi->prviSused = tmpStari->prviSused;
+			++tmpNovi;
+			++tmpStari;
+			if (tmpStari->naziv == "") { break; }
+		}
 	}
 	Pokazivac* stari = listaPokazivaca;
 	listaPokazivaca = listaPokazivaca1;
@@ -128,10 +134,14 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 	++sled;
 	while (1) {
 		if(tmp1->naziv != s1){
-			while (tmp1->prviSused == 0 || sled->prviSused == 0) {
+			while (tmp1->prviSused == 0 || (sled->prviSused == 0 && sled->naziv != "")) {
 				if (tmp1->naziv == s1) { break; }
-				if (!tmp1->prviSused) { ++tmp1; ++sled; }
+				if (!tmp1->prviSused) { 
+					++tmp1;
+					if (tmp1 == sled) { ++sled; }
+				}
 				else { ++sled; }
+				
 			}
 			if (tmp1->naziv != s1) {
 				tmp1->prviSused = tmp3;
@@ -139,6 +149,7 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					tmp3->sused = tmp2->sused;
 					tmp3->tezina = tmp2->tezina;
 					++tmp3;
+					if (tmp3 == &listaSuseda1[brGrana - 1]) { break; }
 					++tmp2;
 				}
 				++tmp1;
@@ -158,9 +169,11 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 		else {
 			if ((tmp2->sused[0] >= 'a' && s2[0] >= 'a') || (tmp2->sused[0] <= 'Z' && s2[0] <= 'Z')) {
 				if (tmp2->sused[0] < s2[0]) {
+					if (tmp2 == tmp1->prviSused) { tmp1->prviSused = tmp3; }
 					tmp3->sused = tmp2->sused;
 					tmp3->tezina = tmp2->tezina;
 					++tmp2;
+					++tmp3;
 				}
 				else {
 					tmp3->sused = s2;
@@ -170,9 +183,11 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 			}
 			else if (tmp2->sused[0] > 'a') {
 				if (tmp2->sused[0] - 'a' + 'A' < s2[0]) {
+					if (tmp2 == tmp1->prviSused) { tmp1->prviSused = tmp3; }
 					tmp3->sused = tmp2->sused;
 					tmp3->tezina = tmp2->tezina;
 					++tmp2;
+					++tmp3;
 				}
 				else {
 					tmp3->sused = s2;
@@ -182,9 +197,11 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 			}
 			else {
 				if (tmp2->sused[0] + 'a' - 'A' < s2[0]) {
+					if (tmp2 == tmp1->prviSused) { tmp1->prviSused = tmp3; }
 					tmp3->sused = tmp2->sused;
 					tmp3->tezina = tmp2->tezina;
 					++tmp2;
+					++tmp3;
 				}
 				else {
 					tmp3->sused = s2;
@@ -195,11 +212,18 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 		}
 	}
 	while (1) {
-		while (tmp1->prviSused == 0 || sled->prviSused == 0) {
-			if (tmp1->naziv == s1) { break; }
-			if (!tmp1->prviSused) { ++tmp1; ++sled; }
+		if (tmp1->naziv == "") { break; }
+		while ((tmp1->prviSused == 0) || (sled->prviSused == 0 && sled->naziv != "")) {
+			if (!tmp1->prviSused) { 
+				++tmp1;
+				if (tmp1->naziv == "") { break; }
+				if (tmp1 == sled) { ++sled; }
+					 
+				
+			}
 			else { ++sled; }
 		}
+		if (tmp1->naziv == "") { break; }
 		if (tmp1->prviSused == tmp2) { 
 			tmp1->prviSused = tmp3;
 			if (tmp3->sused != "") { ++tmp3; }
@@ -211,6 +235,7 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 			++tmp2;
 			if (tmp2 == &listaSuseda[brGrana - 1]) { break; }
 		}
+		if (tmp3->sused != "") { ++tmp3; }
 		++tmp1;
 		if (tmp1 == sled) { ++sled; }
 		if (tmp2 == &listaSuseda[brGrana - 1]) { break; }
