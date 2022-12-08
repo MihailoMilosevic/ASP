@@ -127,24 +127,30 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 	Pokazivac* sled = tmp1;
 	++sled;
 	while (1) {
-		if (tmp1->naziv != s1) {
-			if (!sled->prviSused) { ++sled; }
-			if (!tmp1->prviSused) { ++tmp1; }
-			tmp3->sused = tmp2->sused;
-			tmp3->tezina = tmp2->tezina;
-			if (tmp2 == tmp1->prviSused) { tmp1->prviSused = tmp3; }
-			++tmp2;
-			++tmp3;
-			if (sled->prviSused == tmp2) { 
-				++tmp1;
-				++sled;
+		if(tmp1->naziv != s1){
+			while (tmp1->prviSused == 0 || sled->prviSused == 0) {
+				if (tmp1->naziv == s1) { break; }
+				if (!tmp1->prviSused) { ++tmp1; ++sled; }
+				else { ++sled; }
 			}
-			if (!tmp1->prviSused) { ++tmp1; }
+			if (tmp1->naziv != s1) {
+				tmp1->prviSused = tmp3;
+				while (sled->prviSused != tmp2) {
+					tmp3->sused = tmp2->sused;
+					tmp3->tezina = tmp2->tezina;
+					++tmp3;
+					++tmp2;
+				}
+				++tmp1;
+				if (tmp1 == sled) { ++sled; }
+			}
 		}
 		else if (!tmp1->prviSused) {
-			tmp3->sused = tmp2->sused;
-			tmp3->tezina = tmp3->tezina;
+			tmp3->sused = s2;
+			tmp3->tezina = t;
 			tmp1->prviSused = tmp3;
+			++tmp1;
+			++sled;
 			++tmp3;
 			break;
 		}
@@ -155,12 +161,10 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					tmp3->sused = tmp2->sused;
 					tmp3->tezina = tmp2->tezina;
 					++tmp2;
-					++tmp3;
 				}
 				else {
 					tmp3->sused = s2;
 					tmp3->tezina = t;
-					++tmp3;
 					break;
 				}
 			}
@@ -169,12 +173,10 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					tmp3->sused = tmp2->sused;
 					tmp3->tezina = tmp2->tezina;
 					++tmp2;
-					++tmp3;
 				}
 				else {
 					tmp3->sused = s2;
 					tmp3->tezina = t;
-					++tmp3;
 					break;
 				}
 			}
@@ -183,25 +185,36 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					tmp3->sused = tmp2->sused;
 					tmp3->tezina = tmp2->tezina;
 					++tmp2;
-					++tmp3;
 				}
 				else {
 					tmp3->sused = s2;
 					tmp3->tezina = t;
-					++tmp3;
 					break;
 				}
 			}
 		}
 	}
 	while (1) {
-		tmp3->sused = tmp2->sused;
-		tmp3->tezina = tmp2->tezina;
-		if (tmp1->prviSused = tmp2) { tmp1->prviSused = tmp3; }
-		++tmp3;
-		++tmp2;
+		while (tmp1->prviSused == 0 || sled->prviSused == 0) {
+			if (tmp1->naziv == s1) { break; }
+			if (!tmp1->prviSused) { ++tmp1; ++sled; }
+			else { ++sled; }
+		}
+		if (tmp1->prviSused == tmp2) { 
+			tmp1->prviSused = tmp3;
+			if (tmp3->sused != "") { ++tmp3; }
+		}
+		while (sled->prviSused != tmp2) {
+			tmp3->sused = tmp2->sused;
+			tmp3->tezina = tmp2->tezina;
+			++tmp3;
+			++tmp2;
+			if (tmp2 == &listaSuseda[brGrana - 1]) { break; }
+		}
+		++tmp1;
+		if (tmp1 == sled) { ++sled; }
 		if (tmp2 == &listaSuseda[brGrana - 1]) { break; }
-		if (tmp2 == sled->prviSused) { ++tmp1; ++sled; }
+		
 	}
 	Grana* stara = listaSuseda;
 	listaSuseda = listaSuseda1;
