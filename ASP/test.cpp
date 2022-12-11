@@ -6,26 +6,24 @@ using namespace std;
 int main() {
 	
 	ifstream dat;
-	dat.open("graf1.txt", ios::in);
+	dat.open("graf2.txt", ios::in);
 	Graf g;
 	dat >> g;
-	g.dodajCvor("Bul");
-	g.dodajCvor("Branko");
-	g.dodajCvor("zadatak");
-	g.dodajCvor("zvezda");
+	g.dodajCvor("novac");
 	g.dodajCvor("racun");
-	g.dodajCvor("ocena");
-	g.dodajGranu("Bul", "ocena", 0.11);
-	g.dodajGranu("Bul", "ETF", 0.2);
-	g.dodajGranu("racun", "ETF", 0.56);
-	g.dodajGranu("ocena", "racun", 0.4);
-	g.dodajGranu("ocena", "ETF", 0.83);
-	g.dodajGranu("zadatak", "ocena", 0.8);
-	g.dodajGranu("zadatak", "ETF", 0.63);
-	g.dodajGranu("zvezda", "ETF", 0.13);
-	g.dodajGranu("zvezda", "ocena", 0); 
-	g.dodajGranu("zvezda", "Branko", 0.2);
-	// UCITAVANJE GRAFA NIJE DOBRO POPRAVI GA
+	g.dodajCvor("firma");
+	//g.dodajGranu("firma", "preduzece", 0.92);
+	//g.dodajGranu("racun", "trgovanje", 0.85); 
+	//g.dodajGranu("novac", "racun", 0.7);
+	//g.ukloniGranu("berza", "trziste");
+	//g.ukloniGranu("trziste", "potrosac");
+	//g.ukloniGranu("trziste", "maloprodaja");
+	//g.ukloniGranu("trziste", "berza");
+	//g.ukloniGranu("trgovanje", "banka");
+	//g.ukloniGranu("preduzece", "kapital");
+	//g.ukloniGranu("investicije", "berza");
+	//g.ukloniCvor("trziste");
+	//g.ukloniCvor("berza");
 	cout << g;
 	dat.close();
 

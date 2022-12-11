@@ -18,7 +18,8 @@ public:
 	}
 	void dodajCvor(string s);
 	void dodajGranu(string s1, string s2, double t);
-	int br_cvorova() const { return brCvorova; }
+	void ukloniGranu(string s1, string s2);
+	void ukloniCvor(string s);
 private:
 
 	int brCvorova, brGrana;
