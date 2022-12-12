@@ -1,8 +1,13 @@
 #include "graf.h"
 #include <iostream>
+#include <iomanip>
 using namespace std;
 void Graf::procitaj(istream& ut){
 	ut >> brCvorova >> brGrana;
+	if (brCvorova <= 1 || brGrana < 0) { 
+		cout << "GRESKA PRI CITANJU";
+		exit(1);
+	}
 	listaPokazivaca = new Pokazivac[brCvorova + 1];
 	listaSuseda = new Grana[brGrana];
 	tekP = listaPokazivaca;
@@ -135,6 +140,7 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 				if (tmp1->naziv == s1) { break; }
 				if (!tmp1->prviSused) { 
 					++tmp1;
+					if (!sled->prviSused) { ++sled; } //dodao
 					if (tmp1 == sled) { ++sled; }
 				}
 				else { ++sled; }
@@ -234,6 +240,7 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 		while ((tmp1->prviSused == nullptr) || (sled->prviSused == nullptr && sled->naziv != "")) {
 			if (!tmp1->prviSused) { 
 				++tmp1;
+				if (!sled->prviSused) { ++sled; } //dodao
 				if (tmp1->naziv == "") { break; }
 				if (tmp1 == sled) { ++sled; }
 					 
@@ -277,6 +284,7 @@ void Graf::ukloniGranu(string s1, string s2){
 		while (!tmp1->prviSused || !sled->prviSused) {
 			if (!tmp1->prviSused) { 
 				++tmp1;
+				if (!sled->prviSused) { ++sled; } // dodao
 				if (tmp1 == sled) { ++sled; }
 			}
 			else { ++sled; }
@@ -311,6 +319,7 @@ void Graf::ukloniGranu(string s1, string s2){
 			while ((tmp1->prviSused == nullptr) || (sled->prviSused == nullptr && sled->naziv != "")) {
 				if (!tmp1->prviSused) {
 					++tmp1;
+					if (!sled->prviSused) { ++sled; } //dodao
 					if (tmp1->naziv == "") { break; }
 					if (tmp1 == sled) { ++sled; }
 
@@ -350,6 +359,7 @@ void Graf::ukloniCvor(string s) {
 	Pokazivac* listaPokazivaca1 = new Pokazivac[brCvorova + 1];
 	Pokazivac* tmpStari = listaPokazivaca;
 	Pokazivac* tmpNovi = listaPokazivaca1;
+	Pokazivac* sled = tmpNovi;
 	while(tmpStari->naziv != s){ ++tmpStari; }
 	while (tmpStari->prviSused) {
 		ukloniGranu(tmpStari->naziv, tmpStari->prviSused->sused);
@@ -367,4 +377,48 @@ void Graf::ukloniCvor(string s) {
 	Pokazivac* stari = listaPokazivaca;
 	listaPokazivaca = listaPokazivaca1;
 	delete[] stari;
+	++sled;
+	Grana* tmp = listaSuseda;
+	tmpNovi = listaPokazivaca1;
+	int pozicijaG = 0;
+	int pozicijaC = 0;
+	int signal = 0;
+	while (1) {
+		if (tmpNovi->naziv == "") { break; }
+		while (!tmpNovi->prviSused || !sled->prviSused) {
+			if (!tmpNovi->prviSused) {
+				if (!sled->prviSused) { ++sled; }
+				++tmpNovi;
+				++pozicijaC;
+				if (tmpNovi->naziv == "" || sled->naziv == "") { break; }
+				if (tmpNovi == sled) { ++sled; }
+			}
+			else { 
+				++sled;
+				if (sled->naziv == "") { break; }
+			}
+		}
+		while (tmp != sled->prviSused) {
+			if (tmp->sused == s) {
+				ukloniGranu(tmpNovi->naziv, s);
+				tmp = &listaSuseda[pozicijaG];
+				tmpNovi = &listaPokazivaca[pozicijaC];
+				sled = tmpNovi;
+				++sled;
+				signal = 1;
+				break;
+			}
+			if (tmp == &listaSuseda[brGrana - 1]) { break; };
+			++pozicijaG;
+			++tmp;
+		}
+		if (tmp == &listaSuseda[brGrana - 1] || pozicijaG == brGrana) { break; };
+		if (!signal) {
+			++tmpNovi;
+			++pozicijaC;
+			if (tmpNovi == sled) { ++sled; }
+		}
+		else { signal = 0; }
+	}
+	
 }

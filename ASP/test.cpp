@@ -12,9 +12,9 @@ int main() {
 	g.dodajCvor("novac");
 	g.dodajCvor("racun");
 	g.dodajCvor("firma");
-	//g.dodajGranu("firma", "preduzece", 0.92);
-	//g.dodajGranu("racun", "trgovanje", 0.85); 
-	//g.dodajGranu("novac", "racun", 0.7);
+	g.dodajGranu("firma", "preduzece", 0.92);
+	g.dodajGranu("racun", "trgovanje", 0.85); 
+	g.dodajGranu("novac", "racun", 0.7);
 	//g.ukloniGranu("berza", "trziste");
 	//g.ukloniGranu("trziste", "potrosac");
 	//g.ukloniGranu("trziste", "maloprodaja");
@@ -22,8 +22,8 @@ int main() {
 	//g.ukloniGranu("trgovanje", "banka");
 	//g.ukloniGranu("preduzece", "kapital");
 	//g.ukloniGranu("investicije", "berza");
-	//g.ukloniCvor("trziste");
-	//g.ukloniCvor("berza");
+	//g.ukloniCvor("");
+	g.ukloniCvor("maloprodaja");
 	cout << g;
 	dat.close();
 
