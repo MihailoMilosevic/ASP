@@ -1,33 +1,57 @@
 #include <iostream>
 #include <fstream>
+#include<iomanip>
 #include "graf.h"
 using namespace std;
 
 int main() {
-	
+	int op;
+	string s1, s2;
+	double tez;
 	ifstream dat;
 	dat.open("graf2.txt", ios::in);
 	Graf g;
 	dat >> g;
-	g.dodajCvor("novac");
-	g.dodajCvor("racun");
-	g.dodajCvor("novac");
-	g.dodajGranu("racun", "trgovanje", 0.85); 
-	g.dodajGranu("potrosac", "banka", 0.7);
-	g.dodajGranu("trziste", "trgovanje", 0.7);
-	g.dodajGranu("banka", "berza", 0.85);
-	g.dodajGranu("banka", "trgovanje", 0.85);
-	g.ukloniGranu("trziste", "trgovanje");
-	g.ukloniGranu("banka", "berza");
-	g.ukloniGranu("investicije", "berza");
-	g.ukloniGranu("preduzece", "kapital");
-	//g.ukloniGranu("trgovanje", "banka");
-	//g.ukloniGranu("preduzece", "kapital");
-	//g.ukloniGranu("investicije", "berza");
-	//g.ukloniCvor("");
-	g.ukloniCvor("banka");
-	//g.ukloniCvor("trgovanje");
-	cout << g;
+	cout << setw(80) << "GRAF" << endl << endl << endl;
+	cout << g << endl << endl;
+	cout << "1. ISPISATI GRAF " << setw(32) << "2. DODATI CVOR" << setw(32) << "3. UKLONITI CVOR" << setw(32) << "4. DODATI GRANU" << setw(32) << "5. UKLONITI GRANU ";
+	cout << endl << endl;
+	while (1) {
+		cout << "UNESITE BROJ OPERACIJE KOJU TREBA IZVRSITI NAD GRAFOM:\n ";
+		cin >> op;
+		switch (op) {
+		case 1: cout << g;
+			break;
+		case 2: {
+			cout << "\nUnesite cvor: ";
+			cin >> s1;
+			g.dodajCvor(s1);
+			break;
+		}
+		case 3: {
+			cout << "\nUnesite cvor: ";
+			cin >> s1;
+			g.ukloniCvor(s1);
+			break;
+		}
+		case 4: {
+			cout << "\nUnesite granu po sledecem principu CVOR1 CVOR2 TEZINA:\n";
+			cin >> s1 >> s2 >> tez;
+			g.dodajGranu(s1, s2, tez);
+			break;
+		}
+		case 5: {
+			cout << "\nUnesite granu po sledecem principu CVOR1 CVOR2:\n";
+			cin >> s1 >> s2;
+			g.ukloniGranu(s1, s2);
+			break;
+		}
+		case -1: {exit(1);}
+		default: {
+			cout << "\nNE POSTOJI OPERACIJA SA ZADATIM BROJEM";
+		}
+		}
+	}
 	dat.close();
 
 
