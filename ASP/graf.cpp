@@ -65,7 +65,47 @@ void Graf::ispisi(ostream& it) const{
 	}
 }
 
+int Graf::proveraCvora(string s) const {
+	Pokazivac* provera = listaPokazivaca;
+	while (provera->naziv != "") {
+		if (s == provera->naziv) { return 1; }
+		++provera;
+	}
+	return 0;
+}
+
+int Graf::proveraGrane(string s1, string s2) const {
+	if (proveraCvora(s1) == 0) { return 0; }
+	if (proveraCvora(s2) == 0) { return 0; }
+	return 1;
+}
+
+bool Graf::postojiGrana(string s1, string s2) const {
+	if (proveraCvora(s1) == 0) { return false; }
+	Pokazivac* tmp1 = listaPokazivaca;
+	Pokazivac* sled = tmp1;
+	++sled;
+	Grana* tmp2 = listaSuseda;
+	while (tmp1->naziv != s1) {
+		++tmp1;
+		++sled;
+	}
+	while (!sled->prviSused) {
+		if (sled->naziv == "") { break; }
+		++sled;
+	}
+	tmp2 = tmp1->prviSused;
+	if (!tmp2) { return false; }
+	while (tmp2 != sled->prviSused) {
+		if (tmp2->sused == s2) { return true; }
+		if (tmp2 == &listaSuseda[brGrana - 1]) { break; }
+		++tmp2;
+	}
+	return false;
+}
+
 void Graf::dodajCvor(string s){
+	if (proveraCvora(s) == 1) { return; };
 	++brCvorova;
 	Pokazivac* listaPokazivaca1 = new Pokazivac[brCvorova + 1];
 	Pokazivac* tmpStari = listaPokazivaca;
@@ -127,6 +167,16 @@ void Graf::dodajCvor(string s){
 }
 
 void Graf::dodajGranu(string s1, string s2, double t) {
+	if (proveraGrane(s1, s2) == 0) {
+		cout << "Neki od cvorova ne postoji" << endl;
+		exit(1);
+	}
+	if (s1 == s2) { return; }
+	if (t < 0 || t > 1) {
+		cout << "Tezina grane nije u opsegu [0,1]" << endl;
+		exit(1);
+	}
+	if (postojiGrana(s1, s2) == 1) { return; }
 	++brGrana;
 	Grana* listaSuseda1 = new Grana[brGrana];
 	Pokazivac* tmp1 = listaPokazivaca;
@@ -176,6 +226,10 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					if (tmp2 != sled->prviSused) {
 						tmp3->sused = tmp2->sused;
 						tmp3->tezina = tmp2->tezina;
+						if (tmp2 == &listaSuseda[brGrana - 2]) {
+							++tmp3;
+							break;
+						}
 						++tmp2;
 						++tmp3;
 					}
@@ -197,6 +251,10 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					if (tmp2 != sled->prviSused) {
 						tmp3->sused = tmp2->sused;
 						tmp3->tezina = tmp2->tezina;
+						if (tmp2 == &listaSuseda[brGrana - 2]) {
+							++tmp3;
+							break;
+						}
 						++tmp2;
 						++tmp3;
 					}
@@ -218,6 +276,10 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					if (tmp2 != sled->prviSused) {
 						tmp3->sused = tmp2->sused;
 						tmp3->tezina = tmp2->tezina;
+						if (tmp2 == &listaSuseda[brGrana - 2]) {
+							++tmp3;
+							break;
+						}
 						++tmp2;
 						++tmp3;
 					}
@@ -235,36 +297,42 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 			}
 		}
 	}
-	while (1) {
-		if (tmp1->naziv == "") { break; }
-		while ((tmp1->prviSused == nullptr) || (sled->prviSused == nullptr && sled->naziv != "")) {
-			if (!tmp1->prviSused) { 
-				++tmp1;
-				if (!sled->prviSused) { ++sled; } //dodao
-				if (tmp1->naziv == "") { break; }
-				if (tmp1 == sled) { ++sled; }
-					 
-				
+	if (tmp2 == &listaSuseda[brGrana - 2]) { 
+		tmp3->sused = s2;
+		tmp3->tezina = t;
+	}
+	else {
+		while (1) {
+			if (tmp1->naziv == "") { break; }
+			while ((tmp1->prviSused == nullptr) || (sled->prviSused == nullptr && sled->naziv != "")) {
+				if (!tmp1->prviSused) {
+					++tmp1;
+					if (!sled->prviSused) { ++sled; } //dodao
+					if (tmp1->naziv == "") { break; }
+					if (tmp1 == sled) { ++sled; }
+
+
+				}
+				else { ++sled; }
 			}
-			else { ++sled; }
-		}
-		if (tmp1->naziv == "") { break; }
-		if (tmp1->prviSused == tmp2) { 
-			tmp1->prviSused = tmp3;
+			if (tmp1->naziv == "") { break; }
+			if (tmp1->prviSused == tmp2) {
+				tmp1->prviSused = tmp3;
+				if (tmp3->sused != "") { ++tmp3; }
+			}
+			while (sled->prviSused != tmp2) {
+				tmp3->sused = tmp2->sused;
+				tmp3->tezina = tmp2->tezina;
+				++tmp3;
+				++tmp2;
+				if (tmp2 == &listaSuseda[brGrana - 1]) { break; }
+			}
 			if (tmp3->sused != "") { ++tmp3; }
-		}
-		while (sled->prviSused != tmp2) {
-			tmp3->sused = tmp2->sused;
-			tmp3->tezina = tmp2->tezina;
-			++tmp3;
-			++tmp2;
+			++tmp1;
+			if (tmp1 == sled) { ++sled; }
 			if (tmp2 == &listaSuseda[brGrana - 1]) { break; }
+
 		}
-		if (tmp3->sused != "") { ++tmp3; }
-		++tmp1;
-		if (tmp1 == sled) { ++sled; }
-		if (tmp2 == &listaSuseda[brGrana - 1]) { break; }
-		
 	}
 	Grana* stara = listaSuseda;
 	listaSuseda = listaSuseda1;
@@ -273,6 +341,10 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 }
 
 void Graf::ukloniGranu(string s1, string s2){
+	if (!postojiGrana(s1,s2)) {
+		cout << "Uklanja se nepostojeca grana " << s1 << " - " << s2 << endl;
+		exit(1);
+	}
 	--brGrana;
 	Pokazivac* tmp1 = listaPokazivaca;
 	Pokazivac* sled = tmp1;
@@ -355,6 +427,10 @@ void Graf::ukloniGranu(string s1, string s2){
 }
 
 void Graf::ukloniCvor(string s) {
+	if(proveraCvora(s) == 0) {
+		cout << "Izbacuje se nepostojeci cvor " << s << endl;
+		exit(1);
+	}
 	--brCvorova;
 	Pokazivac* listaPokazivaca1 = new Pokazivac[brCvorova + 1];
 	Pokazivac* tmpStari = listaPokazivaca;

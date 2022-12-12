@@ -44,6 +44,9 @@ private:
 	void procitajGranu(istream& ut);
 	void ispisi(ostream& it) const;
 	void brisi() { delete[] listaPokazivaca; delete[] listaSuseda; }
+	int proveraCvora(string s) const;
+	int proveraGrane(string s1, string s2) const;
+	bool postojiGrana(string s1, string s2) const;
 	
 };
 
