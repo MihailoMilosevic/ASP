@@ -215,7 +215,13 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 			tmp1->prviSused = tmp3;
 			++tmp1;
 			++sled;
-			++tmp3;
+			if (tmp3 != &listaSuseda1[brGrana - 1]) { ++tmp3; }
+			else {
+				Grana* stara = listaSuseda;
+				listaSuseda = listaSuseda1;
+				delete[] stara;
+				return;
+			}
 			break;
 		}
 
@@ -297,6 +303,7 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 			}
 		}
 	}
+	
 	if (tmp2 == &listaSuseda[brGrana - 2]) { 
 		tmp3->sused = s2;
 		tmp3->tezina = t;
@@ -407,15 +414,21 @@ void Graf::ukloniGranu(string s1, string s2){
 			while (sled->prviSused != tmp2) {
 				tmp3->sused = tmp2->sused;
 				tmp3->tezina = tmp2->tezina;
-				if (tmp3 == &listaSuseda1[brGrana - 1]) { break; }
+				if (tmp2 == &listaSuseda[brGrana]) { break; }
 				++tmp3;
 				++tmp2;
 
 			}
 			++tmp1;
 			if (tmp1 == sled) { ++sled; }
-			//if (tmp2 == &listaSuseda[brGrana + 1]) { break; }
-			if (tmp3 == &listaSuseda1[brGrana - 1]) { break; }
+			if (tmp2 == &listaSuseda[brGrana]) { 
+				if (tmp2 == tmp1->prviSused) {
+					tmp3->sused = tmp2->sused;
+					tmp3->tezina = tmp2->tezina;
+					tmp1->prviSused = tmp3;
+				}
+				break;
+			}
 		}
 	}
 	else if (tmp2 == tmp1->prviSused) { tmp1->prviSused = nullptr; }
@@ -441,14 +454,18 @@ void Graf::ukloniCvor(string s) {
 		ukloniGranu(tmpStari->naziv, tmpStari->prviSused->sused);
 	}
 	tmpStari = listaPokazivaca;
-	while (tmpStari->naziv != "") {
+	while (1) {
 		if (tmpStari->naziv != s) {
 			tmpNovi->naziv = tmpStari->naziv;
 			tmpNovi->prviSused = tmpStari->prviSused;
+			if (tmpStari->naziv == "") { break; }
 			++tmpStari;
 			++tmpNovi;
 		}
-		else { ++tmpStari; }
+		else { 
+			if (tmpStari->naziv == "") { break; }
+			++tmpStari;
+		}
 	}
 	Pokazivac* stari = listaPokazivaca;
 	listaPokazivaca = listaPokazivaca1;
@@ -488,7 +505,7 @@ void Graf::ukloniCvor(string s) {
 			++pozicijaG;
 			++tmp;
 		}
-		if (tmp == &listaSuseda[brGrana - 1] || pozicijaG == brGrana) { break; };
+		if ((tmp == &listaSuseda[brGrana - 1] && sled->prviSused != tmp) || pozicijaG == brGrana) { break; };
 		if (!signal) {
 			++tmpNovi;
 			++pozicijaC;
