@@ -129,11 +129,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="graf.cpp" />
+    <ClCompile Include="pred.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graf.h" />
-    <ClInclude Include="Pred.h" />
+    <ClInclude Include="grana.h" />
+    <ClInclude Include="pokazivac.h" />
+    <ClInclude Include="pred.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

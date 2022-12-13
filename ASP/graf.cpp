@@ -515,3 +515,56 @@ void Graf::ukloniCvor(string s) {
 	}
 	
 }
+
+Pred& Graf::kSlicnihReci(string s, int k) const{
+	red.brisi();
+	Pokazivac* tmp1 = listaPokazivaca;
+	Pokazivac* sled = tmp1;
+	++sled;
+	double tez = 1;
+	Grana* tmp2 = listaSuseda;
+	while (tmp1->naziv != s) { ++tmp1; ++sled; }
+	while (!sled->prviSused) { ++sled; }
+	tmp2 = tmp1->prviSused;
+	if (!tmp2) { return red; }
+	while (1) {
+		while (tmp2 != sled->prviSused) {
+			if (!tmp2) { break; }
+			tez = tmp2->tezina;
+			Pokazivac* tmp = listaPokazivaca;
+			while (tmp->naziv != tmp2->sused) { ++tmp; }
+			if (tmp1->naziv != s) { tez = red.tekSlicnost(); }
+			if (tmp->naziv != s) {
+				if (red.postoji(tmp) && red.dohvatiSlCvora(tmp) < (tez *= tmp2->tezina)) {
+					red.izbaciCvor(tmp);
+					red.dodajURed(tmp, tez);
+				}
+				else if (!red.postoji(tmp)) {
+					if (tmp1->naziv != s) { tez = tmp2->tezina * tez; }
+					red.dodajURed(tmp, tez);
+					if (tmp1->naziv == s) { red.postaviTek(); }
+				}
+			}
+			if (tmp2 == &listaSuseda[brGrana - 1]) { break; }
+			++tmp2;
+		}
+		if (red.tekKraj() && tmp1->naziv != s) { break; }
+		if (tmp1->naziv != s) { red.pomeriTek(); }
+		tmp1 = red.dohvatiTek();
+		while (!tmp1->prviSused) {
+			if (red.tekKraj()) { break; }
+			red.pomeriTek();
+		}
+		tmp1 = red.dohvatiTek();
+		tmp2 = tmp1->prviSused;
+		sled = tmp1;
+		++sled;
+		while (!sled->prviSused && sled->naziv != "") {
+			++sled;
+		}
+	}
+	while (red.brojClanova() > k) {
+		red.izbaciPoslDodat();
+	}
+	return red;
+}

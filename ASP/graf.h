@@ -1,7 +1,10 @@
 #ifndef GRAF_H
 #define GRAF_H
 #include <string>
+#include "pred.h"
 using namespace std;
+
+static Pred red;
 
 class Graf {
 public:
@@ -20,11 +23,13 @@ public:
 	void dodajGranu(string s1, string s2, double t);
 	void ukloniGranu(string s1, string s2);
 	void ukloniCvor(string s);
+	Pred& kSlicnihReci(string s, int k) const;
+	
 private:
 
 	int brCvorova, brGrana;
 
-	struct Grana {
+	/*struct Grana {
 		string sused;
 		double tezina;
 		Grana() : tezina(0) {};
@@ -34,7 +39,7 @@ private:
 		string naziv;
 		Grana* prviSused = nullptr;
 		Pokazivac() {};
-	};
+	};*/
 
 	Pokazivac* listaPokazivaca = nullptr;
 	Grana* listaSuseda = nullptr;
