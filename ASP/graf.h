@@ -2,9 +2,12 @@
 #define GRAF_H
 #include <string>
 #include "pred.h"
+#include "red.h"
 using namespace std;
 
-static Pred red;
+
+static Pred pred;
+static Red red;
 
 class Graf {
 public:
@@ -24,6 +27,8 @@ public:
 	void ukloniGranu(string s1, string s2);
 	void ukloniCvor(string s);
 	Pred& kSlicnihReci(string s, int k) const;
+	Red& najkraciPut(string s1, string s2) const;
+	Red& jakoPovezane(string s) const;
 	
 private:
 

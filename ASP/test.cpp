@@ -15,7 +15,8 @@ int main() {
 	dat >> g;
 	cout << setw(80) << "GRAF" << endl << endl << endl;
 	cout << g << endl << endl;
-	cout << "1. ISPISATI GRAF " << setw(30) << "2. DODATI CVOR" << setw(30) << "3. UKLONITI CVOR" << setw(30) << "4. DODATI GRANU" << setw(30) << "5. UKLONITI GRANU " << setw(30) << "6. K SLICNIH";
+	cout << "1. ISPISATI GRAF " << setw(25) << "2. DODATI CVOR" << setw(25) << "3. UKLONITI CVOR" << setw(25)
+		<< "4. DODATI GRANU" << setw(25) << "5. UKLONITI GRANU " << setw(25) << "6. K SLICNIH" << setw(45) << "7. NAJKRACI PUT IZMEDJU 2 CVORA";
 	cout << endl << endl;
 	while (1) {
 		cout << "UNESITE BROJ OPERACIJE KOJU TREBA IZVRSITI NAD GRAFOM:\n ";
@@ -51,6 +52,12 @@ int main() {
 			cout << "\nUnesite cvor i broj k slicnih po principu CVOR k: ";
 			cin >> s1 >> k;
 			cout << g.kSlicnihReci(s1, k);
+			break;
+		}
+		case 7: {
+			cout << "\nUnesite CVOR1 CVOR2: ";
+			cin >> s1 >> s2;
+			cout << g.najkraciPut(s1, s2);
 			break;
 		}
 		case -1: {exit(1);}

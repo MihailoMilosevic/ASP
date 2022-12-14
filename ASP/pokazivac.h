@@ -8,6 +8,7 @@ class Pokazivac {
 	friend class Graf;
 	friend class Grana;
 	friend class Pred;
+	friend class Red;
 public:
 	Pokazivac() {};
 };

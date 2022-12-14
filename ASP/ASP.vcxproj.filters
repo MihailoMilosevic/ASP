@@ -24,6 +24,9 @@
     <ClCompile Include="pred.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="red.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graf.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pokazivac.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="red.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

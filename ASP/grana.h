@@ -8,6 +8,7 @@ class Grana {
 	double tezina;
 	friend class Graf;
 	friend class Pred;
+	friend class Red;
 public:
 	Grana() : tezina(0) {};
 

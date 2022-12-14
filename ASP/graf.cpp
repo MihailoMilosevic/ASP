@@ -517,7 +517,7 @@ void Graf::ukloniCvor(string s) {
 }
 
 Pred& Graf::kSlicnihReci(string s, int k) const{
-	red.brisi();
+	pred.brisi();
 	Pokazivac* tmp1 = listaPokazivaca;
 	Pokazivac* sled = tmp1;
 	++sled;
@@ -526,36 +526,36 @@ Pred& Graf::kSlicnihReci(string s, int k) const{
 	while (tmp1->naziv != s) { ++tmp1; ++sled; }
 	while (!sled->prviSused) { ++sled; }
 	tmp2 = tmp1->prviSused;
-	if (!tmp2) { return red; }
+	if (!tmp2) { return pred; }
 	while (1) {
 		while (tmp2 != sled->prviSused) {
 			if (!tmp2) { break; }
 			tez = tmp2->tezina;
 			Pokazivac* tmp = listaPokazivaca;
 			while (tmp->naziv != tmp2->sused) { ++tmp; }
-			if (tmp1->naziv != s) { tez = red.tekSlicnost(); }
+			if (tmp1->naziv != s) { tez = pred.tekSlicnost(); }
 			if (tmp->naziv != s) {
-				if (red.postoji(tmp) && red.dohvatiSlCvora(tmp) < (tez *= tmp2->tezina)) {
-					red.izbaciCvor(tmp);
-					red.dodajURed(tmp, tez);
+				if (pred.postoji(tmp) && pred.dohvatiSlCvora(tmp) < (tez *= tmp2->tezina)) {
+					pred.izbaciCvor(tmp);
+					pred.dodajURed(tmp, tez);
 				}
-				else if (!red.postoji(tmp)) {
+				else if (!pred.postoji(tmp)) {
 					if (tmp1->naziv != s) { tez = tmp2->tezina * tez; }
-					red.dodajURed(tmp, tez);
-					if (tmp1->naziv == s) { red.postaviTek(); }
+					pred.dodajURed(tmp, tez);
+					if (tmp1->naziv == s) { pred.postaviTek(); }
 				}
 			}
 			if (tmp2 == &listaSuseda[brGrana - 1]) { break; }
 			++tmp2;
 		}
-		if (red.tekKraj() && tmp1->naziv != s) { break; }
-		if (tmp1->naziv != s) { red.pomeriTek(); }
-		tmp1 = red.dohvatiTek();
+		if (pred.tekKraj() && tmp1->naziv != s) { break; }
+		if (tmp1->naziv != s) { pred.pomeriTek(); }
+		tmp1 = pred.dohvatiTek();
 		while (!tmp1->prviSused) {
-			if (red.tekKraj()) { break; }
-			red.pomeriTek();
+			if (pred.tekKraj()) { break; }
+			pred.pomeriTek();
 		}
-		tmp1 = red.dohvatiTek();
+		tmp1 = pred.dohvatiTek();
 		tmp2 = tmp1->prviSused;
 		sled = tmp1;
 		++sled;
@@ -563,8 +563,65 @@ Pred& Graf::kSlicnihReci(string s, int k) const{
 			++sled;
 		}
 	}
-	while (red.brojClanova() > k) {
-		red.izbaciPoslDodat();
+	while (pred.brojClanova() > k) {
+		pred.izbaciPoslDodat();
+	}
+	return pred;
+}
+
+Red& Graf::najkraciPut(string s1, string s2) const{
+	red.brisi();
+	Pokazivac* tmp1 = listaPokazivaca;
+	while (tmp1->naziv != s1) {
+		++tmp1;
+	}
+	red.dodajURed(tmp1, nullptr, 0);
+	red.pomeriTek();
+	if (!tmp1->prviSused) { 
+		red.izbaciPrvi();
+		return red;
+	}
+	Pokazivac* sled = tmp1;
+	++sled;
+	while (!sled->prviSused) {
+		if (sled->naziv == "") { break; }
+		++sled;
+	}
+	Grana* tmp = tmp1->prviSused;
+	while (1) {
+		while (tmp != sled->prviSused) {
+			if (!tmp) { break; }
+			Pokazivac* tmp2 = listaPokazivaca;
+			while (tmp2->naziv != tmp->sused) { ++tmp2; }
+			if (!red.postoji(tmp2)) {
+				red.dodajURed(tmp2, tmp1, tmp->tezina);
+				if (red.dohvatiPosl()->naziv == s2) { break; }
+			}
+			if (red.dohvatiPosl()->naziv == s2) { break; }
+			//if (red.tekKraj()) { break; }
+			
+			if (tmp == &listaSuseda[brGrana - 1]) { break; }
+			++tmp;
+		}
+		if (red.dohvatiPosl()->naziv == s2) { break; }
+		if (red.tekKraj() && tmp1->naziv != s1) { 
+			red.brisi();
+			break;
+		}
+		red.pomeriTek();
+		tmp1 = red.dohvatiTek();
+		tmp = tmp1->prviSused;
+		sled = tmp1;
+		++sled;
+		while (!sled->prviSused) {
+			if (sled->naziv == "") { break; }
+			++sled;
+		}
+	}
+	if (red.dohvatiPrvi() != nullptr) {
+		red.poredjajNaKraj();
+		while (red.dohvatiPrvi()->naziv != s1) { red.izbaciPrvi(); }
 	}
 	return red;
 }
+
