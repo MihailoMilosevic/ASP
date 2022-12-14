@@ -574,6 +574,7 @@ Red& Graf::najkraciPut(string s1, string s2) const{
 	Pokazivac* tmp1 = listaPokazivaca;
 	while (tmp1->naziv != s1) {
 		++tmp1;
+		if (tmp1->naziv == "") { return red; }
 	}
 	red.dodajURed(tmp1, nullptr, 0);
 	red.pomeriTek();
@@ -624,4 +625,32 @@ Red& Graf::najkraciPut(string s1, string s2) const{
 	}
 	return red;
 }
+
+Red& Graf::jakoPovezane(string s) const {
+	red.brisi();
+	int max = 0;
+	Pokazivac* maxEl = nullptr;
+	Pokazivac* tmp = listaPokazivaca;
+	while (tmp->naziv != s) { ++tmp; }
+	Pokazivac* sled = tmp;
+	++sled;
+	while(!sled->prviSused){
+		if (sled->naziv == "") { break; }
+		++sled;
+	}
+	Grana* tmp1 = tmp->prviSused;
+	while (tmp1 != sled->prviSused) {
+		Pokazivac* pom = listaPokazivaca;
+		while (pom->naziv != tmp1->sused) { ++pom; }
+		najkraciPut(pom->naziv, tmp->naziv);
+		if (red.dohvatiBrCvorova() && !maxEl) { maxEl = pom; max = red.dohvatiBrCvorova(); }
+		else if (red.dohvatiBrCvorova() && maxEl) {
+			if(red.dohvatiBrCvorova() < max){ maxEl = pom; max = red.dohvatiBrCvorova(); }
+		}
+		if (tmp1 == &listaSuseda[brGrana - 1]) { break; }
+		++tmp1;
+	}
+	if (maxEl) { red = najkraciPut(maxEl->naziv, tmp->naziv); }
+	return red;
+}// npr likvidnost proverice prvo banku i max ce staviti na nulu posle nema sta da pricam
 

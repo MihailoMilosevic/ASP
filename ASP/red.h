@@ -12,7 +12,7 @@ public:
 	Red& dodajURed(Pokazivac* cvor, Pokazivac* pretCvor, double tezina);
 	void poredjajNaKraj();
 	Red& izbaciPrvi();
-	Pokazivac* dohvatiPosl() const { 
+	Pokazivac* dohvatiPosl() const {
 		if (posl) { return posl->p; }
 		return nullptr;
 	}
@@ -24,7 +24,7 @@ public:
 	void brisi();
 	void pomeriTek();
 	bool tekKraj() const;
-	Pokazivac* dohvatiTek() const { 
+	Pokazivac* dohvatiTek() const {
 		if (tek) { return tek->p; }
 		return nullptr;
 	}
@@ -32,6 +32,8 @@ public:
 		red.ispisi(it);
 		return it;
 	}
+	int dohvatiBrCvorova() const { return brCvorova; }
+	void ispisi() const;
 private:
 	struct Elem {
 		Pokazivac* p = nullptr;
@@ -39,12 +41,13 @@ private:
 		double tezina;
 		Elem* sled = nullptr;
 		Elem(Pokazivac* cvor, Pokazivac* pretCvor, double tez) : p(cvor), pret(pretCvor), tezina(tez) {};
+		Elem(Elem* e) : p(e->p), pret(e->pret), tezina(e->tezina), sled(e->sled) {}
 	};
 	Elem* prvi = nullptr;
 	Elem* posl = nullptr;
 	Elem* tek = nullptr;
 	int brCvorova = 0;
-
+	
 	void ispisi(ostream& it) const;
 };
 

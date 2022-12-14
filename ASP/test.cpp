@@ -16,10 +16,11 @@ int main() {
 	cout << setw(80) << "GRAF" << endl << endl << endl;
 	cout << g << endl << endl;
 	cout << "1. ISPISATI GRAF " << setw(25) << "2. DODATI CVOR" << setw(25) << "3. UKLONITI CVOR" << setw(25)
-		<< "4. DODATI GRANU" << setw(25) << "5. UKLONITI GRANU " << setw(25) << "6. K SLICNIH" << setw(45) << "7. NAJKRACI PUT IZMEDJU 2 CVORA";
+		<< "4. DODATI GRANU" << setw(25) << "5. UKLONITI GRANU " << setw(25) << "6. K SLICNIH" << setw(45) << "7. NAJKRACI PUT IZMEDJU 2 CVORA" << setw(45)
+		<< "8. JAKO POVEZANE RECI ";
 	cout << endl << endl;
 	while (1) {
-		cout << "UNESITE BROJ OPERACIJE KOJU TREBA IZVRSITI NAD GRAFOM:\n ";
+		cout << "\nUNESITE BROJ OPERACIJE KOJU TREBA IZVRSITI NAD GRAFOM:\n ";
 		cin >> op;
 		switch (op) {
 		case 1: cout << g;
@@ -58,6 +59,12 @@ int main() {
 			cout << "\nUnesite CVOR1 CVOR2: ";
 			cin >> s1 >> s2;
 			cout << g.najkraciPut(s1, s2);
+			break;
+		}
+		case 8:{
+			cout << "\nUnesite CVOR: ";
+			cin >> s1;
+			g.jakoPovezane(s1).ispisi();
 			break;
 		}
 		case -1: {exit(1);}

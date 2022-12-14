@@ -75,6 +75,15 @@ bool Red::tekKraj() const {
 	if (tek == posl) { return true; }
 	return false;
 }
+void Red::ispisi() const{
+	Elem* tmp = prvi;
+	while (tmp) {
+		cout << tmp->p->naziv << ' ';
+		tmp = tmp->sled;
+	}
+	cout << endl;
+}
+
 void Red::ispisi(ostream& it) const{
 	Elem* tmp = prvi;
 	while (tmp) {
