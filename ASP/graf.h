@@ -5,7 +5,6 @@
 #include "red.h"
 using namespace std;
 
-
 static Pred pred;
 static Red red;
 
@@ -33,19 +32,6 @@ public:
 private:
 
 	int brCvorova, brGrana;
-
-	/*struct Grana {
-		string sused;
-		double tezina;
-		Grana() : tezina(0) {};
-	};
-	
-	struct Pokazivac {
-		string naziv;
-		Grana* prviSused = nullptr;
-		Pokazivac() {};
-	};*/
-
 	Pokazivac* listaPokazivaca = nullptr;
 	Grana* listaSuseda = nullptr;
 	Pokazivac* tekP = nullptr;

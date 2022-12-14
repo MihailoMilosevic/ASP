@@ -242,12 +242,14 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					else {
 						tmp3->sused = s2;
 						tmp3->tezina = t;
+						++tmp3;
 						break;
 					}
 				}
 				else {
 					tmp3->sused = s2;
 					tmp3->tezina = t;
+					++tmp3;
 					break;
 				}
 			}
@@ -267,12 +269,14 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					else {
 						tmp3->sused = s2;
 						tmp3->tezina = t;
+						++tmp3;
 						break;
 					}
 				}
 				else {
 					tmp3->sused = s2;
 					tmp3->tezina = t;
+					++tmp3;
 					break;
 				}
 			}
@@ -292,19 +296,21 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					else{
 						tmp3->sused = s2;
 						tmp3->tezina = t;
+						++tmp3;
 						break;
 					}
 				}
 				else {
 					tmp3->sused = s2;
 					tmp3->tezina = t;
+					++tmp3;
 					break;
 				}
 			}
 		}
 	}
 	
-	if (tmp2 == &listaSuseda[brGrana - 2]) { 
+	if (tmp2 == &listaSuseda[brGrana - 2] && (tmp3-1)->sused != s2) { 
 		tmp3->sused = s2;
 		tmp3->tezina = t;
 	}
@@ -328,7 +334,7 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 				if (tmp3->sused != "") { ++tmp3; }
 			}
 			while (sled->prviSused != tmp2) {
-				tmp3->sused = tmp2->sused;
+				tmp3->sused = tmp2->sused;//ovde preko dobre vrednosti udari sledecu
 				tmp3->tezina = tmp2->tezina;
 				++tmp3;
 				++tmp2;
