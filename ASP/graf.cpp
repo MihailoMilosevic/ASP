@@ -226,6 +226,7 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 		}
 
 		else {
+			while (!sled->prviSused) { ++sled; }
 			if ((tmp2->sused[0] >= 'a' && s2[0] >= 'a') || (tmp2->sused[0] <= 'Z' && s2[0] <= 'Z')) {
 				if (tmp2->sused[0] < s2[0]) {
 					if (tmp2 == tmp1->prviSused) { tmp1->prviSused = tmp3; }
@@ -242,6 +243,10 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					else {
 						tmp3->sused = s2;
 						tmp3->tezina = t;
+
+						if (tmp1->prviSused == tmp2) {
+							tmp1->prviSused = tmp3;
+						}
 						++tmp3;
 						break;
 					}
@@ -249,6 +254,10 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 				else {
 					tmp3->sused = s2;
 					tmp3->tezina = t;
+
+					if (tmp1->prviSused == tmp2) {
+						tmp1->prviSused = tmp3;
+					}
 					++tmp3;
 					break;
 				}
@@ -269,6 +278,10 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					else {
 						tmp3->sused = s2;
 						tmp3->tezina = t;
+
+						if (tmp1->prviSused == tmp2) {
+							tmp1->prviSused = tmp3;
+						}
 						++tmp3;
 						break;
 					}
@@ -276,6 +289,10 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 				else {
 					tmp3->sused = s2;
 					tmp3->tezina = t;
+
+					if (tmp1->prviSused == tmp2) {
+						tmp1->prviSused = tmp3;
+					}
 					++tmp3;
 					break;
 				}
@@ -296,6 +313,10 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 					else{
 						tmp3->sused = s2;
 						tmp3->tezina = t;
+						
+						if (tmp1->prviSused == tmp2) {
+							tmp1->prviSused = tmp3;
+						}
 						++tmp3;
 						break;
 					}
@@ -303,6 +324,10 @@ void Graf::dodajGranu(string s1, string s2, double t) {
 				else {
 					tmp3->sused = s2;
 					tmp3->tezina = t;
+					
+					if (tmp1->prviSused == tmp2) {
+						tmp1->prviSused = tmp3;
+					}
 					++tmp3;
 					break;
 				}
@@ -560,6 +585,7 @@ Pred& Graf::kSlicnihReci(string s, int k) const{
 		while (!tmp1->prviSused) {
 			if (pred.tekKraj()) { break; }
 			pred.pomeriTek();
+			tmp1 = pred.dohvatiTek();
 		}
 		tmp1 = pred.dohvatiTek();
 		tmp2 = tmp1->prviSused;

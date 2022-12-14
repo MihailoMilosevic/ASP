@@ -74,7 +74,8 @@ void Red::pomeriTek() {
 bool Red::tekKraj() const {
 	if (tek == posl) { return true; }
 	return false;
-}
+}
+
 void Red::ispisi() const{
 	Elem* tmp = prvi;
 	while (tmp) {
